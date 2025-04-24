@@ -6,7 +6,6 @@ Sistem ini dirancang untuk memantau berbagai parameter kualitas air dan cuaca me
 ## 📦 Komponen Utama
 
 ### Sensor dan Modul
-- **Curah Hujan (Rain Sensor)** - menggunakan metode tipping bucket.
 - **AT500** - membaca parameter pH, TSS, dan NH3-N.
 - **MACE** - membaca battery level, kedalaman (depth), dan laju aliran (flow).
 - **Spectro COD Sensor (Modbus TCP/IP)** - membaca nilai COD dari sensor melalui protokol Modbus TCP/IP.
@@ -14,18 +13,18 @@ Sistem ini dirancang untuk memantau berbagai parameter kualitas air dan cuaca me
 ### Struktur File
 - `main.py` — Program utama yang menggabungkan semua pembacaan sensor dan menyimpan ke database.
 - `database.py` — Koneksi dan fungsi penyimpanan data ke PostgreSQL.
-- `at500.py`, `mace.py`, `rain.py` — Modul pembacaan masing-masing sensor.
+- `at500.py`, `mace.py`,  — Modul pembacaan masing-masing sensor.
 - `spectro.py` — Modul pembacaan sensor COD via Modbus TCP/IP.
 
 ## 🛠️ Cara Kerja
 
-1. Setiap 2 detik, program:
+1. Program:
    - Membaca data dari semua sensor.
    - Menampilkan hasil ke terminal.
    - Menyimpan data ke dalam tabel `sensor_datas`.
 
 2. Nilai yang disimpan meliputi:
-   - `datetime`, `rain`, `ph`, `tss`, `nh3n`, `depth`, `flow`, `cod`.
+   - `datetime`, `ph`, `tss`, `nh3n`, `depth`, `flow`, `cod`.
 
 ## ⚙️ Database
 
@@ -35,7 +34,7 @@ Pastikan Anda memiliki tabel `sensor_datas` dengan struktur sebagai berikut:
 CREATE TABLE sensor_datas (
     id SERIAL PRIMARY KEY,
     datetime TIMESTAMP,
-    rain REAL,
+    rain REAL, #optional
     ph REAL,
     tss REAL,
     nh3n REAL,
