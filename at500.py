@@ -15,17 +15,17 @@ def read_modbus(port, request, crc):
             timeout = 1
 
             ser = serial.Serial(port, baudrate, bytesize, parity, stopbits, timeout)
-            time.sleep(1)
+            time.sleep(0.2)
 
             modbus_request = request + crc
             ser.write(modbus_request)
-            time.sleep(1)  # Tunggu respons
+            time.sleep(0.2)  # Tunggu respons
             response = ser.read(256)
 
             if not response:
                 print(f"Percobaan {attempt}/{MAX_RETRIES}: No response from {port}, retrying...")
                 ser.close()
-                time.sleep(1)  # Tunggu sebelum mencoba lagi
+                time.sleep(0.5)  # Tunggu sebelum mencoba lagi
                 continue
 
             if len(response) >= 7:  # Pastikan respons cukup panjang
@@ -35,12 +35,12 @@ def read_modbus(port, request, crc):
             else:
                 print(f"Percobaan {attempt}/{MAX_RETRIES}: Incomplete response from {port}, retrying...")
                 ser.close()
-                time.sleep(1)
+                time.sleep(0.5)
                 continue
 
         except Exception as e:
             print(f"Percobaan {attempt}/{MAX_RETRIES}: Error reading Modbus: {e}, retrying...")
-            time.sleep(1)  # Tunggu sebelum mencoba lagi
+            time.sleep(0.5)  # Tunggu sebelum mencoba lagi
 
     print(f"Gagal membaca data dari {port} setelah {MAX_RETRIES} percobaan.")
     return None  # Kembalikan None jika gagal membaca setelah 3 percobaan
