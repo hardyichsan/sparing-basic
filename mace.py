@@ -12,13 +12,13 @@ def read_mace():
         timeout = 1
 
         ser = serial.Serial(port, baudrate, bytesize, parity, stopbits, timeout)
-        time.sleep(1) 
+        time.sleep(0.2) 
         request = bytearray([0x01, 0x04, 0x00, 0x00, 0x00, 0x06])
         crc = bytearray([0x70, 0x08])
         modbus_request = request + crc
 
         ser.write(modbus_request)
-        time.sleep(1)  
+        time.sleep(0.2)  
         response = ser.read(256)
 
         if not response:
