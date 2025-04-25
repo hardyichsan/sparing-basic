@@ -1,0 +1,3 @@
+*/2 * * * * main.py
+0 * * * * sendApi.py
+4,8,12 * * * * retrySendApi.py

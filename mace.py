@@ -13,8 +13,8 @@ def read_mace():
 
         ser = serial.Serial(port, baudrate, bytesize, parity, stopbits, timeout)
         time.sleep(0.2) 
-        request = bytearray([0x01, 0x04, 0x00, 0x00, 0x00, 0x06])
-        crc = bytearray([0x70, 0x08])
+        request = bytearray([0x01, 0x04, 0x00, 0x00, 0x00, 0x08])
+        crc = bytearray([0xF1, 0xCC])
         modbus_request = request + crc
 
         ser.write(modbus_request)
@@ -24,22 +24,23 @@ def read_mace():
         if not response:
             print("No response received from MACE sensor")
             ser.close()
-            return None, None, None
+            return None, None, None, None
         
         if len(response) >= 15:  
-            bat = round(struct.unpack('>f', response[3:7])[0], 2)
+            battery = round(struct.unpack('>f', response[3:7])[0], 2)
             depth = round(struct.unpack('>f', response[7:11])[0], 2)
             flow = round(struct.unpack('>f', response[11:15])[0], 2)
+            tflow = round(struct.unpack('>f', response[15:19])[0], 2)
         else:
             print("Incomplete response received from MACE sensor")
             ser.close()
-            return None, None, None
+            return None, None, None, None
 
         ser.close()
-        return bat, depth, flow
+        return battery, depth, flow, tflow
     except Exception as e:
         print(f"Error in read_modbus4: {e}")
-        return None, None, None
+        return None, None, None, None
 
 def get_mace_data():
     return read_mace()
